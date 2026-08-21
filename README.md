@@ -5,4 +5,5 @@ This project can currently add tasks with a name and description:
   `python cli.app "{TASK NAME}" -d "{TASK DESCRIPTION}"`
 
 as well as list all current tasks:
+
   `python cli.app list`
