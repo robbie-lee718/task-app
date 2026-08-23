@@ -46,7 +46,7 @@ class Sqlite:
         
         columns_sql = ", ".join(col_definitions)
 
-        query = f"CREATE TABLE IF NOT EXISTS {self.table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, {columns_sql});"
+        query = f"CREATE TABLE IF NOT EXISTS {self.table_name} (id INTEGER PRIMARY KEY, {columns_sql});"
 
         self.connect.execute(query)
 
