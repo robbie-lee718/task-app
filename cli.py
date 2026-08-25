@@ -1,5 +1,6 @@
 import argparse
 from sqlite import Sqlite
+from typing import Optional
 
 def init_db(db_path: str, table_name: str):
     """Ensure the table exists before running operations."""
@@ -13,7 +14,31 @@ def init_db(db_path: str, table_name: str):
 def add_task(name: str, description: str, db_path: str, table_name: str):
     with Sqlite(db_path, table_name) as db:
         task_id = db.insert({"name": name, "description": description})
-        print(f"Task created with ID: {task_id}")
+        print(f"Task created: {task_id}")
+
+def update_task(task_id: int, name: Optional[str], description: Optional[str], db_path: str, table_name:str):
+    with Sqlite(db_path, table_name) as db:
+        tasks = db.get_all()
+
+        if task_id < 1 or task_id > len(tasks):
+            print(f"Error: Invalid task number '{task_id}'. Choose between 1 and {len(tasks)}.")
+            return
+
+        target_task = tasks[task_id - 1]
+        real_db_id = target_task["id"]
+
+        update_data = {}
+        if name is not None:
+            update_data["name"] = name
+        if description is not None:
+            update_data["description"] = description
+
+        if not update_data:
+            print("No changes specified. Use -n/--name or -d/--description to update.")
+            return
+
+        db.update(real_db_id, update_data)
+        print(f"Updated task with ID: {task_id}")
 
 def list_tasks(db_path: str, table_name: str):
     with Sqlite(db_path, table_name) as db:
@@ -56,6 +81,12 @@ def main():
     delete_parser = subparsers.add_parser("delete", help="Delete a task by ID")
     delete_parser.add_argument("id", type=int, help="ID of the task to delete")
 
+    # Subcommand: update
+    update_parser = subparsers.add_parser("update", help="Update a task by ID")
+    update_parser.add_argument("id", type=int, help="ID of the task to update")
+    update_parser.add_argument("-n", "--name", type=str, help="Task name")
+    update_parser.add_argument("-d", "--description", type=str, help="Task description")
+
     args = parser.parse_args()
 
     # CLI Configs
@@ -70,6 +101,8 @@ def main():
         list_tasks(db_path, table_name)
     elif args.command == "delete":
         delete_task(args.id, db_path, table_name)
+    elif args.command == "update":
+        update_task(args.id, args.name, args.description, db_path, table_name)
 
 if __name__ == "__main__":
     main()
