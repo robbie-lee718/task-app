@@ -1,5 +1,5 @@
 import sys
-from typing import Optional
+import os
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
     QLabel, QPushButton, QScrollArea, QFrame, QMessageBox, QDialog,
@@ -7,6 +7,16 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt
 from sqlite import Sqlite
+
+def get_app_data_path(db_name="tasks.db"):
+    # Standard user directory across OS platforms
+    app_data = os.path.expanduser("~") 
+    app_dir = os.path.join(app_data, ".TaskApp")
+    
+    # Create directory if it doesn't exist
+    os.makedirs(app_dir, exist_ok=True)
+    
+    return os.path.join(app_dir, db_name)
 
 class TaskDetailDialog(QDialog):
     def __init__(self, name, description, parent=None):
@@ -153,9 +163,10 @@ class TaskItemWidget(QFrame):
 
 
 class TaskListApp(QMainWindow):
-    def __init__(self, db_path="tasks.db", table_name="tasks"):
+    def __init__(self, table_name="tasks"):
         super().__init__()
-        self.db_path = db_path
+
+        self.db_path = get_app_data_path("tasks.db")
         self.table_name = table_name
 
         self.init_db()

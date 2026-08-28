@@ -1,10 +1,15 @@
-.DS_Store
-.vscode/
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
+# PyInstaller build outputs
+dist/
+build/
+*.spec
+
+# Python bytecode & cache
 __pycache__/
-/tasks.db
-/myenv
+*.pyc
+
+# Local SQLite databases
+*.db
+
+# Virtual environments
+myenv/
+.vscode
