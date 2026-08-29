@@ -3,7 +3,7 @@ name: Build and Release TaskApp
 on:
   push:
     tags:
-      - 'v*' # Runs when pushing a version tag like v1.0.0
+      - "v*" # Runs when pushing a version tag like v1.0.0
 
 jobs:
   build:
@@ -44,7 +44,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install Dependencies
         run: |
