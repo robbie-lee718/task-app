@@ -2,8 +2,12 @@
 This is a small personal project for use of better understanding and using SQL queries via sqlite.
 
 ## Downloading
+Download the build corresponding to your system 
+
 [![Windows Download](https://img.shields.io/badge/Download-Windows_x64-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/robbie-lee718/task-app/releases/latest/download/TaskApp-Windows.zip)
+
 [![macOS Download](https://img.shields.io/badge/Download-macOS_Universal-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/robbie-lee718/task-app/releases/latest/download/TaskApp-macOS.zip)
+
 [![Linux Download](https://img.shields.io/badge/Download-Linux_x64-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/robbie-lee718/task-app/releases/latest/download/TaskApp-Linux.tar.gz)
 
 ## Running
