@@ -19,7 +19,7 @@ jobs:
             ASSET_NAME: TaskApp-Windows.zip
             BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" ui.py
             # Compress the dist/TaskApp folder into a zip
-            PACK_CMD: Compress-Archive -Path dist/TaskApp/* -DestinationPath dist/TaskApp-Windows.zip
+            PACK_CMD: cd dist && tar -a -cvzf TaskApp-Windows.zip TaskApp/
 
           # macOS Configuration
           - os: macos-latest
