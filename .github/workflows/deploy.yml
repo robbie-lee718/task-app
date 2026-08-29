@@ -17,7 +17,7 @@ jobs:
           - os: windows-latest
             TARGET: windows
             ASSET_NAME: TaskApp-Windows.zip
-            BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" main.py
+            BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" ui.py
             # Compress the dist/TaskApp folder into a zip
             PACK_CMD: Compress-Archive -Path dist/TaskApp/* -DestinationPath dist/TaskApp-Windows.zip
 
@@ -25,7 +25,7 @@ jobs:
           - os: macos-latest
             TARGET: macos
             ASSET_NAME: TaskApp-macOS.zip
-            BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" main.py
+            BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" ui.py
             # Zipping the .app bundle directory
             PACK_CMD: cd dist && zip -r TaskApp-macOS.zip TaskApp.app
 
@@ -33,7 +33,7 @@ jobs:
           - os: ubuntu-latest
             TARGET: linux
             ASSET_NAME: TaskApp-Linux.tar.gz
-            BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" main.py
+            BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" ui.py
             # Preserve Linux executable file permissions using tar
             PACK_CMD: cd dist && tar -czvf TaskApp-Linux.tar.gz TaskApp/
 
