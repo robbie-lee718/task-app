@@ -10,6 +10,8 @@ Download the build corresponding to your system
 
 [![Linux Download](https://img.shields.io/badge/Download-Linux_x64-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/robbie-lee718/task-app/releases/latest/download/TaskApp-Linux.tar.gz)
 
+*Note: for running on mac you may need to allow the app to open via Privacy and Security settings*
+
 ## Running
 ### Desktop Application
 To run the UI application of TaskAPP run
@@ -22,7 +24,9 @@ Add Task: `python cli.app add "{TASK NAME}" -d "{TASK DESCRIPTION}"`
 
 Delete Task: `python cli.app delete {ROW ID}`
 
-Update Task: `python cli.app update {ROW ID} -n {TASK NAME} -d {TASK DESCRIPTION}`<br><span style="color: gray;">*Note: Including task name or task description is optional*</span>
+Update Task: `python cli.app update {ROW ID} -n {TASK NAME} -d {TASK DESCRIPTION}`
+
+*Note: Including task name or task description is optional*</span>
 
 List Tasks: `python cli.app list`
 
@@ -39,7 +43,7 @@ How to install PyQt5:
 
 `source myenv/bin/activate`
 
-<span style="color: gray;">*Note: Not required to create and source venv but advised to avoid incompatible versions*</span>
+*Note: Not required to create and source venv but advised to avoid incompatible versions*</span>
 
 
 `pip install pyqt5`
