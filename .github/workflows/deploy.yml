@@ -1,0 +1,96 @@
+name: Build and Release TaskApp
+
+on:
+  push:
+    tags:
+      - 'v*' # Runs when pushing a version tag like v1.0.0
+
+jobs:
+  build:
+    name: Build Folder Package on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Windows Configuration
+          - os: windows-latest
+            TARGET: windows
+            ASSET_NAME: TaskApp-Windows.zip
+            BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" main.py
+            # Compress the dist/TaskApp folder into a zip
+            PACK_CMD: Compress-Archive -Path dist/TaskApp/* -DestinationPath dist/TaskApp-Windows.zip
+
+          # macOS Configuration
+          - os: macos-latest
+            TARGET: macos
+            ASSET_NAME: TaskApp-macOS.zip
+            BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" main.py
+            # Zipping the .app bundle directory
+            PACK_CMD: cd dist && zip -r TaskApp-macOS.zip TaskApp.app
+
+          # Linux Configuration
+          - os: ubuntu-latest
+            TARGET: linux
+            ASSET_NAME: TaskApp-Linux.tar.gz
+            BUILD_CMD: pyinstaller --noconsole --onedir --name="TaskApp" main.py
+            # Preserve Linux executable file permissions using tar
+            PACK_CMD: cd dist && tar -czvf TaskApp-Linux.tar.gz TaskApp/
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyqt5 pyinstaller
+
+      - name: Build with PyInstaller (--onedir)
+        run: ${{ matrix.BUILD_CMD }}
+
+      - name: Compress Output Directory
+        shell: bash
+        run: ${{ matrix.PACK_CMD }}
+
+      - name: Upload Build Artifact to Workflow
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.ASSET_NAME }}
+          path: dist/${{ matrix.ASSET_NAME }}
+
+  create-release:
+    name: Publish GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Windows Archive
+        uses: actions/download-artifact@v4
+        with:
+          name: TaskApp-Windows.zip
+          path: release-assets/
+
+      - name: Download macOS Archive
+        uses: actions/download-artifact@v4
+        with:
+          name: TaskApp-macOS.zip
+          path: release-assets/
+
+      - name: Download Linux Archive
+        uses: actions/download-artifact@v4
+        with:
+          name: TaskApp-Linux.tar.gz
+          path: release-assets/
+
+      - name: Publish Release with Archives
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+          generate_release_notes: true
